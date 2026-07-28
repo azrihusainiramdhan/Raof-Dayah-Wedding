@@ -1,0 +1,75 @@
+<?php
+
+session_start();
+
+require('mysqli_connect.php');
+
+$id = $_GET['id'];
+
+$q = "SELECT * FROM question
+      WHERE qid='$id'";
+
+$r = mysqli_query($dbc,$q);
+
+$row = mysqli_fetch_assoc($r);
+
+if($_SERVER['REQUEST_METHOD']=='POST')
+{
+    $q1 = $_POST['q1'];
+    $q2 = $_POST['q2'];
+
+    $sql = "UPDATE question
+
+            SET
+
+            q1='$q1',
+            q2='$q2'
+
+            WHERE qid='$id'";
+
+    mysqli_query($dbc,$sql);
+
+    header("Location:view_survey.php");
+}
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Edit Survey</title>
+</head>
+
+<body>
+
+<h2>Edit Survey</h2>
+
+<form method="post">
+
+Visit Frequency:
+
+<br>
+
+<input type="text"
+name="q1"
+value="<?php echo $row['q1']; ?>">
+
+<br><br>
+
+Service Quality:
+
+<br>
+
+<input type="text"
+name="q2"
+value="<?php echo $row['q2']; ?>">
+
+<br><br>
+
+<input type="submit"
+value="Update Survey">
+
+</form>
+
+</body>
+</html>
